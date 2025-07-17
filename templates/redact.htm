@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SigmaRedact</title>
+<style>
+  body {
+    background-color: #0e0e0e;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    padding: 1rem;
+  }
+  h1 {
+    margin-bottom: 1rem;
+  }
+  #progress-container {
+    width: 80%;
+    background-color: #333;
+    border-radius: 8px;
+    margin: 1rem 0;
+    overflow: hidden;
+    height: 24px;
+  }
+  #progress-bar {
+    height: 24px;
+    width: 0%;
+    background-color: #ff0055;
+    transition: width 0.3s ease;
+  }
+  #status {
+    margin: 1rem 0;
+    font-size: 1.1rem;
+    min-height: 1.5rem;
+  }
+  button {
+    background-color: #ff0055;
+    border: none;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover:enabled {
+    background-color: #ff3366;
+  }
+  button:disabled {
+    background-color: #880022;
+    cursor: default;
+  }
+</style>
+</head>
+<body>
+  <h1>SigmaRedact</h1>
+  <p>Make Reddit posts more sigma with maximum rizz™</p>
+
+  <div id="progress-container">
+    <div id="progress-bar"></div>
+  </div>
+  <div id="status">Press "Start Redaction" to begin.</div>
+
+  <button id="start-btn">Start Redaction</button>
+
+<script>
+  const startBtn = document.getElementById("start-btn");
+  const progressBar = document.getElementById("progress-bar");
+  const status = document.getElementById("status");
+
+  let totalComments = 0;
+  let currentIndex = 0;
+
+  async function fetchTotalComments() {
+    const res = await fetch('/api/brainrotify_progress');
+    const data = await res.json();
+    if(data.error){
+      status.textContent = "Error: " + data.error;
+      return 0;
+    }
+    return data.total;
+  }
+
+  async function brainrotifyNext(index) {
+    const res = await fetch(`/api/brainrotify_next/${index}`, {method: 'POST'});
+    return await res.json();
+  }
+
+  async function startRedaction() {
+    startBtn.disabled = true;
+    status.textContent = "Loading comments...";
+    totalComments = await fetchTotalComments();
+
+    if(totalComments === 0){
+      status.textContent = "No comments found to redact.";
+      startBtn.disabled = false;
+      return;
+    }
+
+    status.textContent = `Redacting ${totalComments} comments...`;
+    currentIndex = 0;
+
+    while (currentIndex < totalComments) {
+      const result = await brainrotifyNext(currentIndex);
+
+      if(result.error){
+        status.textContent = "Error editing comment: " + result.error;
+        break;
+      }
+
+      currentIndex++;
+      let percent = ((currentIndex / totalComments) * 100).toFixed(1);
+      progressBar.style.width = percent + "%";
+      status.textContent = `Redacted ${currentIndex} of ${totalComments} comments (${percent}%)`;
+    }
+
+    if(currentIndex === totalComments){
+      status.textContent = `Redaction complete! ${totalComments} comments transformed.`;
+    }
+    startBtn.disabled = false;
+  }
+
+  startBtn.addEventListener("click", startRedaction);
+</script>
+</body>
+</html>
