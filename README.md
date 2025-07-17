@@ -13,11 +13,11 @@ pip installed
 A Reddit App for OAuth (you will learn on step 3)
 
 Step 1: Set Up Your Project Structure
-SigmaRedact/
-├── app.py
-├── templates/
-│   ├── index.html
-│   └── redact.html
+SigmaRedact:
+    app.py
+    templates:
+        redact.htm
+        index.html
 
 
 Step 2: Install Python Requirements
