@@ -15,7 +15,7 @@ A Reddit App for OAuth (you will learn on step 3)
 Step 1: Set Up Your Project Structure
 SigmaRedact:
     app.py
-    templates:
+    , templates:
         redact.htm
         index.html
 
