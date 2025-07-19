@@ -67,7 +67,7 @@ def callback():
 def home():
     if 'access_token' not in session:
         return redirect(url_for('login'))
-    return render_template('redact.html', user=session['reddit_user'])
+    render_template('redact.htm', user=session['reddit_user'])
 
 @app.route('/logout')
 def logout():
