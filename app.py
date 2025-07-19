@@ -4,12 +4,12 @@ from flask import Flask, redirect, request, session, url_for, render_template, j
 import requests
 
 app = Flask(__name__)
-app.secret_key = "YOUR_SECRET_KEY"  # Fixed secret key
+app.secret_key = "477YqdL-Ox--pwD5JkplWK-44O0LIw"  # Fixed secret key
 
 # Reddit OAuth config
-CLIENT_ID = "YOUR_CLIENT_ID"
-CLIENT_SECRET = "YOUR_SECRET_KEY"
-REDIRECT_URI = "http://localhost:8000/callback"
+CLIENT_ID = "Uf9g4ChR3x7-XdFdfu6G8A"
+CLIENT_SECRET = "477YqdL-Ox--pwD5JkplWK-44O0LIw"
+REDIRECT_URI = "https://sigmaredact.onrender.com/callback"
 USER_AGENT = "SigmaRedactBot/v1 by OrganicGas1298"
 SCOPES = ["identity", "edit", "history", "read"]
 
